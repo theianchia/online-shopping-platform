@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  ####################################
+  # Atomic Microservice: Games
+  ####################################
+  games:
+    build:
+      context: ./services/games
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - 'dev.env'
+    ports:
+      - "30000:5000"
+
+  ####################################
+  # User Interface: Admin Web
+  ####################################
+  # admin-web:
+  #   build:
+  #     context: ./user-interfaces/admin-web
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   env_file:
+  #     - 'dev.env'
+  #   ports:
+  #     - "8001:80"
+
+  ####################################
+  # User Interface: Admin Web
+  ####################################
+  user-web:
+    build:
+      context: ./user-interfaces/user-web
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - 'dev.env'
+    ports:
+      - "30001:3000"
