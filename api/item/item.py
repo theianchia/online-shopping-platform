@@ -10,9 +10,18 @@ def index():
   return "Item connected"
 
 
-@app.route('/get-items')
-def get_items():
-  return jsonify(item_controller.get_items())
+@app.route('/get-all-items', methods=['POST'])
+def get_all_items():
+  data = request.get_json()
+  
+  # esk refers to {"item_name": ""}
+  if 'esk' in data:
+    esk = data['esk']
+    res = item_controller.get_all_items(esk)["Items"]
+  else:
+    res = item_controller.get_all_items(esk)["Items"]
+
+  return res if res else "No items found/left"
 
 
 if __name__ == '__main__':

@@ -9,9 +9,10 @@ CORS(app)
 def hello():
   return 'Error connected'
 
-@app.route('/get-error-logs')
-def get_error_logs():
-  return jsonify(error_controller.get_error_logs())
+@app.route('/get-all-errors')
+def get_all_errors():
+  res = error_controller.get_all_errors()["Items"]
+  return res
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=5004, debug=True)

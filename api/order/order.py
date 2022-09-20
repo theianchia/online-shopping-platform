@@ -12,7 +12,8 @@ def hello():
 
 @app.route('/get-all-orders')
 def get_all_orders():
-  return jsonify(order_controller.get_all_orders())
+  res = order_controller.get_all_orders()["Items"]
+  return res
 
 
 @app.route('/get-orders-by-email', methods=['POST'])

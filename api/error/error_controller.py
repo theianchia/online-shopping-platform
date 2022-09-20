@@ -7,5 +7,7 @@ dynamodb = boto3.resource(
   aws_access_key_id=os.environ.get('ACCESS_KEY'), 
   aws_secret_access_key=os.environ.get('SECRET_KEY'))
 
-def get_error_logs():
-  return dynamodb.Table('error').scan()
+error_table = dynamodb.Table('error')
+
+def get_all_errors():
+  return error_table.scan()
