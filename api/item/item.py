@@ -7,13 +7,13 @@ CORS(app)
 
 @app.route('/')
 def index():
-    return "Item connected"
-    
+  return "Item connected"
+
 
 @app.route('/get-items')
 def get_items():
-    return jsonify(item_controller.get_items())
+  return jsonify(item_controller.get_items())
 
 
 if __name__ == '__main__':
-    app.run()
+  app.run(host='0.0.0.0', port=5003, debug=True)
