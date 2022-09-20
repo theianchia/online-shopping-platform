@@ -1,11 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
 import os, sys
-
 import requests
 from invokes import invoke_http
-
 import amqp_setup
 import pika
 import json
@@ -13,42 +10,40 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-order_log_URL = "http://localhost:5001/order_log"
+order_URL = os.environ.get('ORDER_URL')
+error_URL = os.environ.get('ERROR_URL')
+
+@app.route("/")
+def hello():
+  return 'Place Order connected'
 
 
 @app.route("/place_order", methods=['POST'])
 def place_order():
+  if request.is_json:
+    try:
+      order = request.get_json()
+      result = processPlaceOrder(order)
+      return jsonify(result), result["code"]
 
-    if request.is_json:
-        try:
-            order = request.get_json()
-            print("\nReceived an order in JSON:", order)
-            result = processPlaceOrder(order)
-            print('\n------------------------')
-            print('\nresult: ', result)
-            return jsonify(result), result["code"]
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
 
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-            print(ex_str)
+      return jsonify({
+        "code": 500,
+        "message": "place_order.py internal error: " + ex_str
+      }), 500
 
-            return jsonify({
-                "code": 500,
-                "message": "place_order.py internal error: " + ex_str
-            }), 500
-
-    return jsonify({
-        "code": 400,
-        "message": "Invalid JSON input: " + str(request.get_data())
-    }), 400
+  return jsonify({
+    "code": 400,
+    "message": "Invalid JSON input: " + str(request.get_data())
+  }), 400
 
 
 def processPlaceOrder(order):
-  print('\n-----Invoking order microservice-----')
-  order_result = invoke_http(order_log_URL, method='POST', json=order)
-  print('order_result:', order_result)
+  order_result = invoke_http(order_URL, method='POST', json=order)
 
   code = order_result["code"]
   message = json.dumps(order_result)
@@ -71,6 +66,6 @@ def processPlaceOrder(order):
   
   print("\nOrder published to RabbitMQ Exchange.\n")
 
+
 if __name__ == "__main__":
-  print("This is flask " + os.path.basename(__file__) + " for placing an order...")
   app.run(host="0.0.0.0", port=5100, debug=True)
