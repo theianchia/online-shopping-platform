@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P:wght@400&display=swap');
+
+/* add more styles if necessary */
+
+.navbar-title {
+    font-family: 'Press Start 2P', sans-serif;
+    font-weight:600;
+    font-size:30px;
+    color: white;
+}
+
+.extrabold-80 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:800;
+    font-size:80px;
+}
+
+.bold-60 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:700;
+    font-size:60px;
+}
+
+.bold-30 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:700;
+    font-size:30px;
+}
+
+.bold-24 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:700;
+    font-size:24px;
+}
+
+.bold-20 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:700;
+    font-size:20px;
+}
+
+.medium-40 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:500;
+    font-size:50px;
+}
+
+.medium-20 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:500;
+    font-size:20px;
+}
+
+.medium-15 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:500;
+    letter-spacing: 1px;
+    font-size:15px;
+}
+
+.white-15 {
+    font-family: 'Urbanist', sans-serif;
+    font-weight:500;
+    letter-spacing: 1px;
+    font-size:15px;
+    color: white;
+}
+
+.v-application {
+    font-family: 'Urbanist', sans-serif;
+}
+
+.one-line {
+    white-space: nowrap;
+}
