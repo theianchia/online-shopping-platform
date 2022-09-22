@@ -13,8 +13,8 @@ const getters = {
 const actions = {
   addGameToCart(context, game) {
     console.log('addGameToCart');
-    if (game.stock > 0) {
-      const cartItem = context.state.cart.find((item) => item.id === game.id);
+    if (game.item_stock > 0) {
+      const cartItem = context.state.cart.find((item) => item.item_name === game.item_name);
       if (!cartItem) {
         context.commit('pushGameToCart', game);
       } else {
@@ -25,8 +25,8 @@ const actions = {
     }
   },
   decrementGameInCartQuantity(context, game) {
-    const cartItem = context.state.cart.find((item) => item.id === game.id);
-    if (cartItem.stock > 1) {
+    const cartItem = context.state.cart.find((item) => item.item_name === game.item_name);
+    if (cartItem.item_stock > 1) {
       context.commit('decrementGameCartQuantity', cartItem);
     } else {
       context.commit('removeGameFromCart', cartItem);
@@ -47,7 +47,7 @@ const mutations = {
     cartItem.quantity += 1;
   },
   decrementGameQuantity(state, game) {
-    game.stock -= 1;
+    game.item_stock -= 1;
   },
   decrementGameCartQuantity(state, cartItem) {
     cartItem.quantity -= 1;
