@@ -38,15 +38,22 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col class="text-left ml-7" v-if="showPagePrev">
+          <v-btn outlined class="buttons" @click="handlePagePrev">
+            <p class="ma-auto">Prev</p>
+            <v-icon class="mr-n2">mdi-chevron-left</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col class="text-right mr-7" v-if="showPageNext">
+          <v-btn outlined class="buttons"  @click="handlePageNext">
+            <p class="ma-auto">Next</p>
+            <v-icon class="mr-n2">mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+      
     </v-container>
-    <v-pagination
-      v-model="page"
-      circle
-      class="mb-5"
-      color="#3C6E71"
-      :length="this.total_pages"
-      @next="handlePageNext"
-    ></v-pagination>
   </div>
 </template>
 
@@ -54,15 +61,17 @@
 
 <script>
 import axios from "axios";
+import { consoleError } from "vuetify/lib/util/console";
 
 export default {
   name: "Games",
   data() {
     return {
       game_id: 0,
-      page: 1,
+      page: 0,
       games_per_page: 2,
-      total_pages: 4,
+      total_pages: 0,
+      esk_list: [{ data: "empty" }],
       games: {
         item_name: "",
         item_price: 0,
@@ -71,62 +80,58 @@ export default {
         item_platform: "",
         item_stock: 0,
       },
-      prev_page_item_name: "",
     };
+  },
+  computed: {
+    showPagePrev() {
+      return this.page > 0 ? true : false;
+    },
+    showPageNext() {
+      return this.page < (this.total_pages - 1) ? true : false;
+    },
   },
   methods: {
     getNumPages() {
       const path = "api/get-num-items";
       axios.get(path).then((res) => {
-        this.total_pages = Math.ceil(res.data / this.games_per_page) + 2;
+        this.total_pages = Math.ceil(res.data / this.games_per_page);
       });
     },
     getGamesByEsk(esk) {
       const path = "api/get-all-items";
-      console.log(esk);
       axios
         .post(path, esk)
         .then((res) => {
-          console.log(res);
           this.games = res.data;
-          console.log(this.games);
-          console.log(this.$router);
-          console.log(this.$store);
-          console.log(this.$store.getters.getCart);
         })
         .catch((error) => {
           console.error(error);
         });
     },
     showGame(name) {
-      console.log(name);
       this.$router.push({
         name: "Game",
         query: { item_name: name },
       });
     },
-    handlePageNext(value) {
-      this.page = value;
+    handlePageNext() {
+      console.log(this.total_pages);
+      this.page += 1;
       let esk = { data: "empty" };
       if (this.games.length !== undefined && this.games.length !== 1) {
         const item_name = this.games[this.games_per_page - 1].item_name;
-        console.log(item_name);
         esk = { esk: { item_name: item_name } };
+        this.esk_list.push(esk);
       }
-      this.prev_page_item_name = this.games[0].item_name;
       this.getGamesByEsk(esk);
     },
-    // handlePagePrev(value) {
-    //   this.page = value;
-    //   let esk = { data: "empty" };
-    //   if (this.prev_page_item_name !== "") {
-    //     esk = { esk: { item_name: this.prev_page_item_name } };
-    //   }
-    // },
+    handlePagePrev() {
+      this.page -= 1;
+      let esk = this.esk_list[this.page];
+      this.getGamesByEsk(esk);
+    },
     handleAddToCart(gameId) {
-      console.log(this.$store.getters.getCart);
       const game = this.games.find((cartGame) => cartGame.id === gameId);
-      console.log(game);
       this.$store.dispatch("addGameToCart", game);
     },
   },
@@ -141,5 +146,9 @@ export default {
 <style scoped>
 .game-image {
   cursor: pointer;
+}
+.buttons {
+  color: white !important;
+  background-color: #3c6e71 !important;
 }
 </style>
