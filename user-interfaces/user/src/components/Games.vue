@@ -46,13 +46,12 @@
           </v-btn>
         </v-col>
         <v-col class="text-right mr-7" v-if="showPageNext">
-          <v-btn outlined class="buttons"  @click="handlePageNext">
+          <v-btn outlined class="buttons" @click="handlePageNext">
             <p class="ma-auto">Next</p>
             <v-icon class="mr-n2">mdi-chevron-right</v-icon>
           </v-btn>
         </v-col>
       </v-row>
-      
     </v-container>
   </div>
 </template>
@@ -87,15 +86,20 @@ export default {
       return this.page > 0 ? true : false;
     },
     showPageNext() {
-      return this.page < (this.total_pages - 1) ? true : false;
+      return this.page < this.total_pages - 1 ? true : false;
     },
   },
   methods: {
     getNumPages() {
       const path = "api/get-num-items";
-      axios.get(path).then((res) => {
-        this.total_pages = Math.ceil(res.data / this.games_per_page);
-      });
+      axios
+        .get(path)
+        .then((res) => {
+          this.total_pages = Math.ceil(res.data / this.games_per_page);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     getGamesByEsk(esk) {
       const path = "api/get-all-items";
