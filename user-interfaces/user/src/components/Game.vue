@@ -23,13 +23,16 @@
             <v-card-subtitle class="text-left medium-15 mt-n5" v-text="game.item_desc"></v-card-subtitle>
             <v-spacer></v-spacer>
             <v-card-actions class="ml-auto">
-              <v-btn color="#353535" rounded>
+              <v-btn color="#353535" rounded v-if="availableStock()">
                 <v-card-subtitle
                 class="white-15"
                 @click="handleAddToCart()"
                 >Add to Cart</v-card-subtitle>
                 <v-icon color="white">mdi-plus</v-icon>
               </v-btn>
+              <v-card>
+                <v-card-subtitle v-if="!availableStock()" rounded class="mx-auto">Out of Stock</v-card-subtitle>
+              </v-card>
             </v-card-actions>
           </v-col>
         </v-row>
@@ -72,6 +75,9 @@ export default {
     handleAddToCart() {
       this.$store.dispatch('addGameToCart', this.game);
     },
+    availableStock() {
+      return this.item_stock > 1 ? true : false;
+    }
   },
   created() {
     this.getGame();

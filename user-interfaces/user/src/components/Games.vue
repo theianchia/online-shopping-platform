@@ -37,7 +37,7 @@
                 <v-icon color="white">mdi-plus</v-icon>
               </v-btn>
               <v-card>
-                <v-card-subtitle v-if="!availableStock(game)" rounded>Out of Stock</v-card-subtitle>
+                <v-card-subtitle v-if="!availableStock(game)" rounded class="mx-auto">Out of Stock</v-card-subtitle>
               </v-card>
             </v-card-actions>
           </v-card>
