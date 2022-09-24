@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <v-container fluid>
-      <v-card class="d-flex flex-column">
+      <v-card class="d-flex flex-column rounded-xl">
         <v-row class="ma-5">
           <v-col cols="3" class="d-flex flex-column">
             <v-img :src="game.item_image" position="left" contain max-height="500px">
@@ -13,13 +13,17 @@
               Platform:
               <span v-text="game.item_platform"></span>
             </v-card-subtitle>
+            <v-card-subtitle class="text-left medium-20 mt-2 mb-n4">
+                $
+                <span v-text="game.item_price" class="ml-n1"></span>
+            </v-card-subtitle>
             <v-card-subtitle class="text-left medium-20"
               >Description:</v-card-subtitle
             >
             <v-card-subtitle class="text-left medium-15 mt-n5" v-text="game.item_desc"></v-card-subtitle>
             <v-spacer></v-spacer>
             <v-card-actions class="ml-auto">
-              <v-btn color="#353535">
+              <v-btn color="#353535" rounded>
                 <v-card-subtitle
                 class="white-15"
                 @click="handleAddToCart()"
@@ -59,7 +63,6 @@ export default {
       axios
         .post(path, payload)
         .then((res) => {
-          console.log(res.data.Item);
           this.game = res.data.Item;
         })
         .catch((error) => {

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="background: #faf8f7;">
     <NavigationBar />
     <v-content>
       <router-view />
@@ -21,3 +21,4 @@ export default {
   },
 };
 </script>
+

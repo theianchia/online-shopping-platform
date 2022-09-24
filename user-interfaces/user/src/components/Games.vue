@@ -8,25 +8,27 @@
           :cols="4"
           class="d-flex flex-column"
         >
-          <v-card>
+          <v-card class="rounded-xl">
             <v-img
               :src="game.item_image"
-              class="white--text align-end game-image"
+              class="white--text align-end cursor"
               height="500px"
               contain
               @click="showGame(game.item_name)"
             >
             </v-img>
-            <v-card-title @click="showGame(game.item_name)">
+            <v-card-title @click="showGame(game.item_name)" class="cursor">
               <v-spacer />
               <div class="text-center">
                 <h3 v-text="game.item_name"></h3>
-                <p v-text="game.item_platform" class="medium-15 mb-n5"></p>
+                <p v-text="game.item_platform" class="medium-15 mb-n2"></p>
+                <p class="medium-15 mb-n5">$<span v-text="game.item_price"></span></p>
+            </v-card-subtitle>
               </div>
               <v-spacer />
             </v-card-title>
             <v-card-actions>
-              <v-btn color="#353535" class="mx-auto">
+              <v-btn v-if="availableStock(game)" class="mx-auto buttons" rounded>
                 <v-card-subtitle
                   class="white-15"
                   @click="handleAddToCart(game.item_name)"
@@ -34,24 +36,40 @@
                 >
                 <v-icon color="white">mdi-plus</v-icon>
               </v-btn>
+              <v-card>
+                <v-card-subtitle v-if="!availableStock(game)" rounded>Out of Stock</v-card-subtitle>
+              </v-card>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
       <v-row>
         <v-col class="text-left ml-7" v-if="showPagePrev">
-          <v-btn outlined class="buttons" @click="handlePagePrev">
+          <v-btn class="buttons" rounded @click="handlePagePrev">
             <p class="ma-auto">Prev</p>
             <v-icon class="mr-n2">mdi-chevron-left</v-icon>
           </v-btn>
         </v-col>
         <v-col class="text-right mr-7" v-if="showPageNext">
-          <v-btn outlined class="buttons" @click="handlePageNext">
+          <v-btn class="buttons" rounded @click="handlePageNext">
             <p class="ma-auto">Next</p>
             <v-icon class="mr-n2">mdi-chevron-right</v-icon>
           </v-btn>
         </v-col>
       </v-row>
+      <v-snackbar v-model="snackbar.on">
+        {{snackbar.message}} has been successfully added to cart!
+        <template v-slot:action="{ attrs }">
+            <v-btn
+              color="white"
+              text
+              v-bind="attrs"
+              @click="snackbar.on = false"
+            >
+              Close
+            </v-btn>
+          </template>
+      </v-snackbar>
     </v-container>
   </div>
 </template>
@@ -60,7 +78,6 @@
 
 <script>
 import axios from "axios";
-import { consoleError } from "vuetify/lib/util/console";
 
 export default {
   name: "Games",
@@ -79,6 +96,11 @@ export default {
         item_platform: "",
         item_stock: 0,
       },
+      snackbar: {
+        on: false,
+        game_name: '',
+      },
+      
     };
   },
   computed: {
@@ -119,7 +141,6 @@ export default {
       });
     },
     handlePageNext() {
-      console.log(this.total_pages);
       this.page += 1;
       let esk = { data: "empty" };
       if (this.games.length !== undefined && this.games.length !== 1) {
@@ -134,10 +155,15 @@ export default {
       let esk = this.esk_list[this.page];
       this.getGamesByEsk(esk);
     },
-    handleAddToCart(gameId) {
-      const game = this.games.find((cartGame) => cartGame.id === gameId);
+    handleAddToCart(gameName) {
+      const game = this.games.find((cartGame) => cartGame.item_name === gameName);
       this.$store.dispatch("addGameToCart", game);
+      this.snackbar.message = gameName;
+      this.snackbar.on = true;
     },
+    availableStock(game) {
+      return game.item_stock > 1 ? true : false;
+    }
   },
   created() {
     this.getNumPages();
@@ -148,11 +174,7 @@ export default {
 </script>
 
 <style scoped>
-.game-image {
+.cursor {
   cursor: pointer;
-}
-.buttons {
-  color: white !important;
-  background-color: #3c6e71 !important;
 }
 </style>
