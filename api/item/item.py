@@ -7,22 +7,38 @@ CORS(app)
 
 @app.route('/')
 def index():
-  return "Item connected"
+    return "Item connected"
 
 
 @app.route('/get-all-items', methods=['POST'])
 def get_all_items():
-  data = request.get_json()
-  
-  # esk refers to {"item_name": ""}
-  if 'esk' in data:
-    esk = data['esk']
-    res = item_controller.get_all_items(esk)["Items"]
-  else:
-    res = item_controller.get_all_items(esk)["Items"]
+    data = request.get_json()
 
-  return res if res else "No items found/left"
+    # esk refers to {"item_name": ""}
+    if 'esk' in data:
+        esk = data['esk']
+        print('hello')
+        print(esk)
+        res = item_controller.get_all_items(esk)["Items"]
+    else:
+        res = item_controller.get_all_items()["Items"]
+
+    return res if res else "No items found/left"
+
+
+@app.route('/get-item', methods=['POST'])
+def get_item():
+    data = request.get_json()
+    key = data['key']
+    res = item_controller.get_item(key)
+    return res if res else "No items found/left"
+
+
+@app.route('/get-num-items', methods=['GET'])
+def get_num_items():
+    res = item_controller.get_num_items()
+    return str(res) if res else "0"
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=5003, debug=True)
+    app.run(host='0.0.0.0', port=5003, debug=True)

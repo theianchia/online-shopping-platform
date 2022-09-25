@@ -61,14 +61,8 @@ Use the `BLANK_README.md` to get started.
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
 * [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
+* [Flask] (https://flask.palletsprojects.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -92,18 +86,18 @@ This is an example of how to list things you need to use the software and how to
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/theianchia/is458-games-store.git
    ```
-3. Install NPM packages
+2. Run using docker compose
    ```sh
-   npm install
+   docker compose up -d --build
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Navigate to http://localhost:30001/
+3. To stop the docker containers
+   ```sh
+   docker compose down
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
