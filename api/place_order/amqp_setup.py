@@ -29,29 +29,14 @@ channel.exchange_declare(exchange=exchangename, exchange_type=exchangetype, dura
 # Here can be a place to set up all queues needed by the microservices,
 # - instead of setting up the queues using RabbitMQ UI.
 
-############   Error queue   #############
-#delcare Error queue
-queue_name = 'Error' #?##
+
+queue_name = 'order'
 channel.queue_declare(queue=queue_name, durable=True) 
-    # 'durable' makes the queue survive broker restarts
 
-routing_key = '*.error' #?##
-#bind Error queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key=routing_key) 
-    # bind the queue to the exchange via the key
-    # any routing_key with two words and ending with '.error' will be matched
+routing_key = '*.sms'
 
-############   Activity_Log queue    #############
-#delcare Activity_Log queue
-queue_name = 'Activity_Log' #?##
-channel.queue_declare(queue=queue_name, durable=True)
-    # 'durable' makes the queue survive broker restarts
+channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key=routing_key)
 
-#bind Activity_Log queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='#') #?##
-    # bind the queue to the exchange via the key
-    # 'routing_key=#' => any routing_key would be matched
-    
 
 """
 This function in this module sets up a connection and a channel to a local AMQP broker,
