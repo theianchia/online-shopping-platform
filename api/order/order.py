@@ -32,13 +32,13 @@ def add_order():
   items_dict = data['items']
 
   res = order_controller.add_order(email, items_dict)
-  if res["ResponseMetadata"]["HTTPStatusCode"] == 200:
+  if res["ResponseMetadata"]["HTTPStatusCode"] in range(200, 300):
     return jsonify(
       {
         "code": res["ResponseMetadata"]["HTTPStatusCode"],
         "message": "Order has been added successfully"
       }
-    ), 200
+    ), res["ResponseMetadata"]["HTTPStatusCode"]
 
   return jsonify(
     {
