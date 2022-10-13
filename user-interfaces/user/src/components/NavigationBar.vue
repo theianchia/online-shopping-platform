@@ -4,7 +4,7 @@
       <v-btn to="/" class="py-7" :ripple="false" plain>
         <v-img class="mx-5" src="../assets/shop_logo.png" max-height="100" max-width="100"></v-img>
         <v-toolbar-title>
-          <h1 class="navbar-title">GamerSG</h1>
+          <h1 class="navbar-title">GitGames</h1>
         </v-toolbar-title>
       </v-btn>
       <v-spacer></v-spacer>
