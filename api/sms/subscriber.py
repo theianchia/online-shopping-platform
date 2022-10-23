@@ -1,7 +1,13 @@
-from twilio import twiml
+from twilio.rest import Client
 import json
 import os
 import amqp_setup
+
+monitorBindingKey='#'
+account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
+twilio_number = os.environ.get('TWILIO_PHONE_NUMBER')
+client = Client(account_sid, auth_token)
 
 def receive_sms_data():
   amqp_setup.check_setup()
@@ -21,12 +27,19 @@ def process_sms(sms_data):
   print(sms_data)
   number = sms_data['to']
   message_body = sms_data['body']
-  res = twiml.Response()
-  res.message('Hello {}, you said: {}'.format(number, message_body))
-  return str(resp)
+
+  message = client.messages.create(
+    body=message_body,
+    from_=twilio_number,
+    to=number
+  )
+
+  print(message.sid)
+
+  return str(message)
 
 
 if __name__ == "__main__":
   print("\nThis is " + os.path.basename(__file__), end='')
-  print(": monitoring routing key '{}' in exchange '{}' ...".format(amqp_setup.exchangename))
+  print(": monitoring routing key '{}' in exchange '{}' ...".format(monitorBindingKey, amqp_setup.exchangename))
   receive_sms_data()

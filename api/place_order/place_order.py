@@ -17,9 +17,10 @@ def hello():
   return 'Place Order connected'
 
 
-@app.route("/place_order", methods=['POST'])
+@app.route("/place-order", methods=['POST'])
 def place_order():
   data = request.get_json()
+
   res = invoke_http(
     order_URL + '/add-order',
     method='POST',
@@ -27,14 +28,14 @@ def place_order():
   )
 
   if res["code"] in range(200, 300):
-    routing_key = 'order.info'
     message = f"Hi {data['user_name']}, your order was successfully placed!"
     data = {
       'body': message,
       'to': data['phone_number']
     }
 
-    msg_status = send_sms(data)
+    sms_data = json.dumps(data)
+    msg_status = send_sms(sms_data)
 
   return jsonify(res), res["code"]
 

@@ -6,14 +6,13 @@ import json
 
 def send_sms(message):
   amqp_setup.check_setup()
-  sms_message = json.dumps(message)
 
-  print(sms_message)
+  print(message)
 
   amqp_setup.channel.basic_publish(
       exchange=amqp_setup.exchangename, 
       routing_key="order.sms", 
-      body=sms_message, 
+      body=message, 
       properties=pika.BasicProperties(delivery_mode = 2)
   )
 

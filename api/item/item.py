@@ -6,11 +6,11 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/')
-def index():
+def hello():
     return "Item connected"
 
 
-@app.route('/get-all-items', methods=['POST'])
+@app.route('/get-all-items')
 def get_all_items():
     data = request.get_json()
 
