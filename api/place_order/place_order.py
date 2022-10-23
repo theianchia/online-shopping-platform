@@ -1,10 +1,15 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import os, sys
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 import requests
 from invokes import invoke_http
 import json
 from send_sms import send_sms
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 CORS(app)

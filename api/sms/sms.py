@@ -1,7 +1,12 @@
 from twilio.rest import Client
 import json
 import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 import amqp_setup
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 monitorBindingKey='#'
 account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
