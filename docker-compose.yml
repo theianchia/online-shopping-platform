@@ -1,18 +1,110 @@
 version: "3.8"
 
+volumes:
+  rabbitmq_data:
+
 services:
   ####################################
-  # Atomic Microservice: Items
+  # Atomic Microservice: Item
   ####################################
-  items:
+  item:
     build:
       context: ./api/item
-      dockerfile: Dockerfile
+      dockerfile: item.Dockerfile
+    image: theianchia/item:1.0
     restart: always
     env_file:
       - '.env'
     ports:
-      - "30000:5003"
+      - "5003:5003"
+
+  ###################################
+  # Atomic Microservice: Order
+  ###################################
+  order:
+    build:
+      context: ./api/order
+      dockerfile: order.Dockerfile
+    image: theianchia/order:1.0
+    restart: always
+    env_file:
+      - '.env'
+    ports:
+      - "5002:5002"
+
+  ####################################
+  # Atomic Microservice: Error
+  ####################################
+  error:
+    build:
+      context: ./api/error
+      dockerfile: error.Dockerfile
+    image: theianchia/error:1.0
+    restart: always
+    env_file:
+      - '.env'
+    ports:
+      - "5004:5004"
+
+  ###################################
+  # Atomic Microservice: User
+  ###################################
+  user:
+    build:
+      context: ./api/user
+      dockerfile: user.Dockerfile
+    image: theianchia/user:1.0
+    restart: always
+    env_file:
+      - '.env'
+    ports:
+      - "5001:5001"
+
+  ####################################
+  # Atomic Microservice: SMS
+  ####################################
+  sms:
+    build:
+      context: ./api/sms
+      dockerfile: sms.Dockerfile
+    image: theianchia/sms:1.0
+    depends_on:
+      - rabbitmq
+    restart: always
+    env_file:
+      - '.env'
+
+  ###################################
+  # Atomic Microservice: Place Order
+  ###################################
+  place_order:
+    build:
+      context: ./api/place_order
+      dockerfile: place_order.Dockerfile
+    image: theianchia/place_order:1.0
+    depends_on:
+      - order
+      - error
+      - sms
+      - rabbitmq
+    restart: always
+    env_file:
+      - '.env'
+    ports:
+      - "5100:5100"
+
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: is458-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
 
   ####################################
   # User Interface: User
