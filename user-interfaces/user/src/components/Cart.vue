@@ -46,7 +46,7 @@
             <v-card-subtitle class="medium-20">Total: ${{total_price}}</v-card-subtitle>
           </v-col>
           <v-col class="text-right mx-3">
-            <v-btn class="ml-auto mt-2 buttons" rounded>Checkout</v-btn>
+            <v-btn class="ml-auto mt-2 buttons" rounded to="/checkout">Checkout</v-btn>
           </v-col>
         </v-row>
       </v-card>
@@ -115,7 +115,7 @@ export default {
   },
   created() {
     this.cart = this.$store.getters.getCart;
-    this.getTotalPrice;
+    this.getTotalPrice();
   },
 };
 </script>

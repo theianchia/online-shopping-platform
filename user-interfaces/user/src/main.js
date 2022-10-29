@@ -15,13 +15,12 @@ import {
 
 Vue.config.ignoredElements = [/amplify-\w*/];
 
+Amplify.configure(awsconfig);
+Auth.configure(awsconfig);
 
 applyPolyfills().then(() => {
   defineCustomElements(window);
 });
-
-Amplify.configure(awsconfig);
-Auth.configure(awsconfig);
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);

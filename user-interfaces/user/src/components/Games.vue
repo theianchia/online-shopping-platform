@@ -79,6 +79,10 @@
 <script>
 import axios from "axios";
 
+axios.defaults.headers = {
+  'Content-Type': 'application/json',
+}
+
 export default {
   name: "Games",
   data() {
@@ -98,9 +102,8 @@ export default {
       },
       snackbar: {
         on: false,
-        game_name: '',
+        game_name: "",
       },
-      
     };
   },
   computed: {
@@ -124,10 +127,12 @@ export default {
         });
     },
     getGamesByEsk(esk) {
+      console.log(esk);
       const path = "api/get-all-items";
       axios
         .post(path, esk)
         .then((res) => {
+          console.log(res);
           this.games = res.data;
         })
         .catch((error) => {
@@ -156,14 +161,16 @@ export default {
       this.getGamesByEsk(esk);
     },
     handleAddToCart(gameName) {
-      const game = this.games.find((cartGame) => cartGame.item_name === gameName);
+      const game = this.games.find(
+        (cartGame) => cartGame.item_name === gameName
+      );
       this.$store.dispatch("addGameToCart", game);
       this.snackbar.message = gameName;
       this.snackbar.on = true;
     },
     availableStock(game) {
       return game.item_stock > 1 ? true : false;
-    }
+    },
   },
   created() {
     this.getNumPages();

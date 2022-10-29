@@ -10,7 +10,7 @@ def hello():
     return "Item connected"
 
 
-@app.route('/get-all-items')
+@app.route('/get-all-items', methods=['POST'])
 def get_all_items():
     data = request.get_json()
 
