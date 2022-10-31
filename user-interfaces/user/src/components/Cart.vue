@@ -29,7 +29,7 @@
             </v-card-subtitle>
             <v-card-subtitle class="text-left medium-20 mt-2 mb-n4">
                 $
-                <span v-text="item.game.item_price" class="ml-n1"></span>
+                <span v-text="Number(item.game.item_price).toFixed(2)" class="ml-n1"></span>
             </v-card-subtitle>
             <v-spacer></v-spacer>
             <v-card-actions class="ml-auto">
@@ -43,7 +43,7 @@
       <v-card class="d-flex flex-column rounded-xl"  v-if="!isCartEmpty">
         <v-row>
           <v-col class="text-left mx-3">
-            <v-card-subtitle class="medium-20">Total: ${{total_price}}</v-card-subtitle>
+            <v-card-subtitle class="medium-20">Total: ${{total_price.toFixed(2)}}</v-card-subtitle>
           </v-col>
           <v-col class="text-right mx-3">
             <v-btn class="ml-auto mt-2 buttons" rounded to="/checkout">Checkout</v-btn>
@@ -83,7 +83,7 @@ export default {
     handleMinus(game) {
       const cartItem = this.cart.find((cartItem) => cartItem.game.item_name === game.item_name);
       this.$store.dispatch('decrementGameInCartQuantity', cartItem.game);
-      this.getTotalPrice;
+      this.getTotalPrice();
     },
     handlePlus(game) {
       const cartItem = this.cart.find((cartItem) => cartItem.game.item_name === game.item_name);
@@ -92,18 +92,13 @@ export default {
       } else {
         this.no_stock = true;
       }
-      this.getTotalPrice;
+      this.getTotalPrice();
     },
     showGame(name) {
       this.$router.push({
         name: "Game",
         query: { item_name: name },
       });
-    },
-  },
-  computed: {
-    isCartEmpty() {
-        return this.cart.length > 0 ? false : true;
     },
     getTotalPrice() {
       this.total_price = 0;
@@ -112,6 +107,11 @@ export default {
       });
       this.total_price = Math.round(this.total_price * 100) / 100;
     }
+  },
+  computed: {
+    isCartEmpty() {
+        return this.cart.length > 0 ? false : true;
+    },
   },
   created() {
     this.cart = this.$store.getters.getCart;

@@ -22,8 +22,7 @@
               <div class="text-center">
                 <h3 v-text="game.item_name"></h3>
                 <p v-text="game.item_platform" class="medium-15 mb-n2"></p>
-                <p class="medium-15 mb-n5">$<span v-text="game.item_price"></span></p>
-            </v-card-subtitle>
+                <p class="medium-15 mb-n5">$<span v-text="Number(game.item_price).toFixed(2)"></span></p>
               </div>
               <v-spacer />
             </v-card-title>
