@@ -1,7 +1,5 @@
 version: "3.8"
 
-x-aws-vpc: "vpc-0f793558f9bad7e46"
-
 volumes:
   rabbitmq_data:
 
@@ -13,7 +11,7 @@ services:
     build:
       context: ./api/item
       dockerfile: item.Dockerfile
-    image: "public.ecr.aws/m5u2v7u5/item:latest"
+    image: theianchia/item:1.0
     restart: always
     env_file:
       - ".env"
@@ -27,40 +25,12 @@ services:
     build:
       context: ./api/order
       dockerfile: order.Dockerfile
-    image: "public.ecr.aws/m5u2v7u5/order:latest"
+    image: theianchia/order:1.0
     restart: always
     env_file:
       - ".env"
     ports:
       - "5002:5002"
-
-  ####################################
-  # Atomic Microservice: Error
-  ####################################
-  error:
-    build:
-      context: ./api/error
-      dockerfile: error.Dockerfile
-    image: theianchia/error
-    restart: always
-    env_file:
-      - '.env'
-    ports:
-      - "5004:5004"
-
-  ###################################
-  # Atomic Microservice: User
-  ###################################
-  user:
-    build:
-      context: ./api/user
-      dockerfile: user.Dockerfile
-    image: theianchia/user
-    restart: always
-    env_file:
-      - '.env'
-    ports:
-      - "5001:5001"
 
   ####################################
   # Atomic Microservice: SMS
@@ -69,7 +39,7 @@ services:
     build:
       context: ./api/sms
       dockerfile: sms.Dockerfile
-    image: "public.ecr.aws/m5u2v7u5/sms:latest"
+    image: theianchia/sms:1.0
     depends_on:
       - rabbitmq
     restart: always
@@ -83,10 +53,9 @@ services:
     build:
       context: ./api/place_order
       dockerfile: place_order.Dockerfile
-    image: "public.ecr.aws/m5u2v7u5/place_order:latest"
+    image: theianchia/place_order:1.0
     depends_on:
       - order
-      # - error
       - sms
       - rabbitmq
     restart: always
@@ -107,16 +76,3 @@ services:
       - "15672:15672"
     volumes: 
       - rabbitmq_data:/var/lib/rabbitmq
-
-  ####################################
-  # User Interface: User
-  ####################################
-  user-web:
-    build:
-      context: ./user-interfaces/user
-      dockerfile: Dockerfile
-    restart: always
-    env_file:
-      - '.env'
-    ports:
-      - "30001:8080"

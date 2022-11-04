@@ -21,13 +21,22 @@ def get_orders_by_email(email):
   return res
 
 def add_order(email, items_dict):
-  date = datetime.now()
+  date = datetime.now().strftime('%b %d, %Y %H:%M:%S')
 
-  res = order_table.put_item(
-    Item = {
-      'user_email': email,
-      'order_date': str(date),
-      'items': items_dict,
-    }
+  order_id = datetime.now().strftime('%s')
+
+  with order_table.batch_writer() as batch:
+    for (item_name, item_quantity) in items_dict.items():
+      batch.put_item(
+        Item = {
+          'user_email': email,
+          'order_date': str(date),
+          'item_name': item_name,
+          'item_quantity': item_quantity,
+          'order_id': order_id
+        }
+      )
+  res = order_table.query(
+    KeyConditionExpression=Key('order_id').eq(order_id)
   )
   return res
