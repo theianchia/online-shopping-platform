@@ -22,8 +22,7 @@
               <div class="text-center">
                 <h3 v-text="game.item_name"></h3>
                 <p v-text="game.item_platform" class="medium-15 mb-n2"></p>
-                <p class="medium-15 mb-n5">$<span v-text="game.item_price"></span></p>
-            </v-card-subtitle>
+                <p class="medium-15 mb-n5">$<span v-text="Number(game.item_price).toFixed(2)"></span></p>
               </div>
               <v-spacer />
             </v-card-title>
@@ -79,6 +78,10 @@
 <script>
 import axios from "axios";
 
+axios.defaults.headers = {
+  'Content-Type': 'application/json',
+}
+
 export default {
   name: "Games",
   data() {
@@ -98,9 +101,8 @@ export default {
       },
       snackbar: {
         on: false,
-        game_name: '',
+        game_name: "",
       },
-      
     };
   },
   computed: {
@@ -124,10 +126,12 @@ export default {
         });
     },
     getGamesByEsk(esk) {
+      console.log(esk);
       const path = "api/get-all-items";
       axios
         .post(path, esk)
         .then((res) => {
+          console.log(res);
           this.games = res.data;
         })
         .catch((error) => {
@@ -156,14 +160,16 @@ export default {
       this.getGamesByEsk(esk);
     },
     handleAddToCart(gameName) {
-      const game = this.games.find((cartGame) => cartGame.item_name === gameName);
+      const game = this.games.find(
+        (cartGame) => cartGame.item_name === gameName
+      );
       this.$store.dispatch("addGameToCart", game);
       this.snackbar.message = gameName;
       this.snackbar.on = true;
     },
     availableStock(game) {
       return game.item_stock > 1 ? true : false;
-    }
+    },
   },
   created() {
     this.getNumPages();

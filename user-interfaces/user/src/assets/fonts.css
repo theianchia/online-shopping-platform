@@ -94,3 +94,9 @@ v-app {
 .cursor {
     cursor: pointer;
 }
+
+:root {
+    --amplify-primary-color: #5ba4a3;
+    --amplify-primary-tint: #5ba4a2;
+    --amplify-primary-shade: #5ba4a0;
+  }

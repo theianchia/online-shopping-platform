@@ -42,8 +42,10 @@ const actions = {
     context.commit('decrementGameStock', game);
     context.commit('saveCart');
   },
+  clearCart(context) {
+    context.commit('clearCart');
+  }
 };
-
 const mutations = {
   pushGameToCart(state, cartGame) {
     state.cart.push({
@@ -75,6 +77,11 @@ const mutations = {
   saveCart(state) {
     window.localStorage.setItem('cart', JSON.stringify(state.cart));
     window.localStorage.setItem('num_items_in_cart', JSON.stringify(state.num_items_in_cart));
+  },
+  clearCart(state) {
+    window.localStorage.clear();
+    state.cart = [];
+    state.num_items_in_cart = 0;
   }
 };
 

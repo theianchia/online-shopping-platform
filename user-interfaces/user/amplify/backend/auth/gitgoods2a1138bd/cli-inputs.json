@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "gamersge44e6198_identitypool_e44e6198",
+    "identityPoolName": "gitgoods2a1138bd_identitypool_2a1138bd",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "gamerse44e6198",
-    "userPoolName": "gamersge44e6198_userpool_e44e6198",
+    "resourceNameTruncated": "gitgoo2a1138bd",
+    "userPoolName": "gitgoods2a1138bd_userpool_2a1138bd",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -34,15 +34,12 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "gamerse44e6198_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "gitgoo2a1138bd_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "e44e6198",
-    "resourceName": "gamersge44e6198",
+    "sharedId": "2a1138bd",
+    "resourceName": "gitgoods2a1138bd",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
-    "usernameAttributes": [
-      "email"
-    ],
     "triggers": {},
     "userPoolGroupList": [],
     "serviceName": "Cognito",
