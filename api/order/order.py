@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import json
 import order_controller
 
 app = Flask(__name__)
@@ -27,7 +28,7 @@ def get_orders_by_email():
 
 @app.route('/add-order', methods=['POST'])
 def add_order():
-  data = request.get_json()
+  data = json.loads(request.get_json(force=True))
   email = data['email']
   items_dict = data['items']
 
