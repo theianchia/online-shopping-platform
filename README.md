@@ -44,15 +44,15 @@ Git Goods is an online shopping platform that focuses on selling a variety of ga
 
 ### Technical Diagrams
 <div align="center">
-	<img src="assets/soa_layer.jpg" height="300">
-	<img src="assets/tech_overview.jpg" height="300">
+	<img src="assets/soa_layer.jpg" height="250">
+	<img src="assets/tech_overview.jpg" height="250">
 </div>
 
 > SOA Layered Architecture and Technical Overview Diagram
 
 ### Deployment Infrastructure
 <div align="center">
-	<img src="assets/archi.png" height="450">
+	<img src="assets/archi.png">
 </div>
 
 > Solution Architecture
