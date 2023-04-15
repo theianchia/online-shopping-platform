@@ -6,12 +6,14 @@ import user_controller
 app = Flask(__name__)
 CORS(app)
 
+base_route = '/user'
+
 @app.route("/")
 def hello():
   return 'User connected'
 
 
-@app.route("/create-password", methods=['POST'])
+@app.route(f"{base_route}/password", methods=['POST'])
 def create_password():
   data = request.get_json()
   password = data['password']
@@ -22,7 +24,7 @@ def create_password():
   return h.hexdigest()
 
 
-@app.route("/login", methods=['POST'])
+@app.route(f"{base_route}/login", methods=['POST'])
 def login():
   data = request.get_json()
   email = data['email']

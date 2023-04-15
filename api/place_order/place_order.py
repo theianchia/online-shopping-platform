@@ -14,6 +14,8 @@ load_dotenv(dotenv_path)
 app = Flask(__name__)
 CORS(app)
 
+base_route = '/place-order'
+
 order_URL = os.environ.get('ORDER_URL')
 error_URL = os.environ.get('ERROR_URL')
 
@@ -22,7 +24,7 @@ def hello():
   return 'Place Order connected'
 
 
-@app.route("/place-order", methods=['POST'])
+@app.route(f"{base_route}", methods=['POST'])
 def place_order():
   data = request.get_json()
 

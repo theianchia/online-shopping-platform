@@ -5,12 +5,14 @@ import item_controller
 app = Flask(__name__)
 CORS(app)
 
+base_route = '/item'
+
 @app.route('/')
 def hello():
     return "Item connected"
 
 
-@app.route('/get-all-items', methods=['POST'])
+@app.route(f"{base_route}/all", methods=['POST'])
 def get_all_items():
     data = request.get_json()
 
@@ -26,7 +28,7 @@ def get_all_items():
     return res if res else "No items found/left"
 
 
-@app.route('/get-item', methods=['POST'])
+@app.route(f"{base_route}", methods=['POST'])
 def get_item():
     data = request.get_json()
     key = data['key']
@@ -34,7 +36,7 @@ def get_item():
     return res if res else "No items found/left"
 
 
-@app.route('/get-num-items', methods=['GET'])
+@app.route(f"{base_route}/number", methods=['GET'])
 def get_num_items():
     res = item_controller.get_num_items()
     return str(res) if res else "0"

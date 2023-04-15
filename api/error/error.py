@@ -5,11 +5,13 @@ import error_controller
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/")
+base_route = '/error'
+
+@app.route('/')
 def hello():
   return 'Error connected'
 
-@app.route('/get-all-errors')
+@app.route(f"{base_route}/all")
 def get_all_errors():
   res = error_controller.get_all_errors()["Items"]
   return res

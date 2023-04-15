@@ -6,18 +6,20 @@ import order_controller
 app = Flask(__name__)
 CORS(app)
 
+base_route = '/order'
+
 @app.route("/")
 def hello():
   return 'Order connected'
 
 
-@app.route('/get-all-orders')
+@app.route(f"{base_route}/all")
 def get_all_orders():
   res = order_controller.get_all_orders()["Items"]
   return res
 
 
-@app.route('/get-orders-by-email', methods=['POST'])
+@app.route(f"{base_route}/email", methods=['POST'])
 def get_orders_by_email():
   data = request.get_json()
   email = data['email']
@@ -26,7 +28,7 @@ def get_orders_by_email():
   return res["Items"]
 
 
-@app.route('/add-order', methods=['POST'])
+@app.route(f"{base_route}", methods=['POST'])
 def add_order():
   data = json.loads(request.get_json(force=True))
   email = data['email']
